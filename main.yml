@@ -1,18 +1,41 @@
-```python
-import pandas as pd
+name: C++ to Excel
 
-# Data yang akan dimasukkan ke Excel
-data = {
-    "No": [1, 2, 3],
-    "Nama": ["Andi", "Budi", "Citra"],
-    "Nilai": [85, 90, 95]
-}
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
-# Membuat tabel
-df = pd.DataFrame(data)
+permissions:
+  contents: read
 
-# Menyimpan menjadi file Excel
-df.to_excel("hasil.xlsx", index=False)
+jobs:
+  convert:
+    runs-on: ubuntu-latest
 
-print("File Excel berhasil dibuat!")
-```
+    steps:
+      - name: Mengambil kode repository
+        uses: actions/checkout@v4
+
+      - name: Menyiapkan compiler C++
+        run: |
+          g++ main.cpp -o main
+
+      - name: Menyiapkan Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Memasang library
+        run: |
+          pip install -r requirements.txt
+
+      - name: Menjalankan program C++ dan membuat Excel
+        run: |
+          python main.py
+
+      - name: Mengunggah hasil Excel
+        uses: actions/upload-artifact@v4
+        with:
+          name: hasil-excel
+          path: hasil.xlsx
