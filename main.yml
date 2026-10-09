@@ -1,0 +1,18 @@
+```python
+import pandas as pd
+
+# Data yang akan dimasukkan ke Excel
+data = {
+    "No": [1, 2, 3],
+    "Nama": ["Andi", "Budi", "Citra"],
+    "Nilai": [85, 90, 95]
+}
+
+# Membuat tabel
+df = pd.DataFrame(data)
+
+# Menyimpan menjadi file Excel
+df.to_excel("hasil.xlsx", index=False)
+
+print("File Excel berhasil dibuat!")
+```
